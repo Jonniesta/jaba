@@ -1,97 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABA Daily Tracker</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABA Daily Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
 </head>
 <body>
-
-<div class="container">
-
+  <header>
     <h1>ABA Daily Tracker</h1>
+    <p>Mobile data collection app</p>
+  </header>
 
-    <div class="card">
-        <label>Client Name</label>
-        <input type="text" id="client">
+  <main>
+    <section class="card">
+      <h2>Session Info</h2>
 
-        <label>Date</label>
-        <input type="date" id="date">
+      <label>Client Name</label>
+      <input id="clientName" type="text" placeholder="Client name" />
 
-        <label>Therapist</label>
-        <input type="text" id="therapist">
+      <label>Date</label>
+      <input id="sessionDate" type="date" />
+
+      <label>Therapist</label>
+      <input id="therapistName" type="text" placeholder="Therapist name" />
+    </section>
+
+    <section class="card">
+      <h2>Tally Targets</h2>
+
+      <div class="target">
+        <span>Follow Directions</span>
+        <button onclick="changeCount('follow', -1)">-</button>
+        <strong id="follow">0</strong>
+        <button onclick="changeCount('follow', 1)">+</button>
+      </div>
+
+      <div class="target">
+        <span>Functional Communication</span>
+        <button onclick="changeCount('communication', -1)">-</button>
+        <strong id="communication">0</strong>
+        <button onclick="changeCount('communication', 1)">+</button>
+      </div>
+
+      <div class="target">
+        <span>Transitions</span>
+        <button onclick="changeCount('transition', -1)">-</button>
+        <strong id="transition">0</strong>
+        <button onclick="changeCount('transition', 1)">+</button>
+      </div>
+
+      <div class="target">
+        <span>Group Instruction</span>
+        <button onclick="changeCount('group', -1)">-</button>
+        <strong id="group">0</strong>
+        <button onclick="changeCount('group', 1)">+</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Trial Data</h2>
+
+      <div id="trialList"></div>
+
+      <button class="secondary" onclick="addTrial()">Add Trial</button>
+    </section>
+
+    <section class="card">
+      <h2>DTT Questions</h2>
+
+      <label>Responds to name</label>
+      <select id="respondsName">
+        <option value="">Select</option>
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="N/A">N/A</option>
+      </select>
+
+      <label>Answers WH question</label>
+      <select id="whQuestion">
+        <option value="">Select</option>
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="N/A">N/A</option>
+      </select>
+
+      <label>Imitates action</label>
+      <select id="imitatesAction">
+        <option value="">Select</option>
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="N/A">N/A</option>
+      </select>
+    </section>
+
+    <section class="card">
+      <h2>Emotion Communication</h2>
+
+      <label>Emotion identified</label>
+      <select id="emotionIdentified">
+        <option value="">Select</option>
+        <option>Happy</option>
+        <option>Sad</option>
+        <option>Mad</option>
+        <option>Scared</option>
+        <option>Frustrated</option>
+        <option>Excited</option>
+      </select>
+
+      <label>Communication level</label>
+      <select id="communicationLevel">
+        <option value="">Select</option>
+        <option>Independent</option>
+        <option>Prompted</option>
+        <option>Modeled</option>
+        <option>Not observed</option>
+      </select>
+    </section>
+
+    <section class="card">
+      <h2>Session Notes</h2>
+      <textarea id="notes" placeholder="Type session notes here..."></textarea>
+    </section>
+
+    <section class="card dashboard">
+      <h2>Dashboard</h2>
+      <p>Total Tally Count: <strong id="totalCount">0</strong></p>
+      <p>Trial Accuracy: <strong id="accuracy">0%</strong></p>
+      <p>Saved Sessions: <strong id="savedCount">0</strong></p>
+    </section>
+
+    <div class="actions">
+      <button onclick="saveSession()">Save Session</button>
+      <button onclick="exportCSV()">Export CSV</button>
+      <button onclick="clearForm()" class="danger">Clear</button>
     </div>
 
-    <div class="card">
+    <section class="card">
+      <h2>Previous Sessions</h2>
+      <div id="history"></div>
+    </section>
+  </main>
 
-        <h2>Targets</h2>
-
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Skill</th>
-                    <th>Result</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td>Follow Directions</td>
-
-                    <td>
-                        <select>
-                            <option>-</option>
-                            <option>+</option>
-                        </select>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Functional Communication</td>
-
-                    <td>
-                        <select>
-                            <option>-</option>
-                            <option>+</option>
-                        </select>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Transition</td>
-
-                    <td>
-                        <select>
-                            <option>-</option>
-                            <option>+</option>
-                        </select>
-                    </td>
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    <div class="card">
-
-        <label>Session Notes</label>
-
-        <textarea id="notes"></textarea>
-
-    </div>
-
-    <button onclick="saveData()">
-        Save Session
-    </button>
-
-</div>
-
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
